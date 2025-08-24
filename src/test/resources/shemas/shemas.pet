@@ -1,0 +1,18 @@
+{
+  "id": "Integer",
+  "category": {
+    "id": "Integer",
+    "name": "String"
+  },
+  "name": "String",
+  "photoUrls": [
+    "String"
+  ],
+  "tags": [
+    {
+      "id": "Integer",
+      "name": "String"
+    }
+  ],
+  "status": "String"
+}
