@@ -8,7 +8,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import utils.ConfProperties;
 import utils.ContextManeger;
+import utils.JsonReader;
 import utils.TypeContext;
+
+import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -23,10 +26,12 @@ public class UserStep {
         this.baseUri = ConfProperties.getProperty("base_url");
     }
 
-    @When("Отправлен POST запрос по {string} с телом запроса:")
-    public void resquestPost(String endpoint, String body) {
+    @When("Отправлен POST запрос {string} с телом запроса {string}")
+    public void resquestPost(String endpoint, String path) throws IOException {
+        String jsonContent = JsonReader.jsonReader(path);
+
         response = given().baseUri(baseUri)
-                .contentType(ContentType.JSON).body(body).post(endpoint);
+                .contentType(ContentType.JSON).body(jsonContent).post(endpoint);
         TypeContext context = new TypeContext(response);
         ContextManeger.setCurrentContext(context);
     }
@@ -44,8 +49,7 @@ public class UserStep {
     }
 
     @When("Отправлен GET запрос по {string} и имени пользователя {string}")
-    public void getUser(String endpoint, String user) throws InterruptedException {
-        Thread.sleep(5000);
+    public void getUser(String endpoint, String user) {
         response = given()
                 .baseUri(baseUri)
                 .contentType(ContentType.JSON)
